@@ -42,7 +42,7 @@ export const useTodo = () => {
   }, [localDatabaseRepository])
 
   const doneCurrentTodo = useCallback(async (currentTodo: Todo): Promise<Todo> => {
-    currentTodo.setDoneDate()
+    currentTodo.is_done = new Date()
     await localDatabaseRepository.remove("currentTodo")
     return currentTodo
   }, [localDatabaseRepository])
