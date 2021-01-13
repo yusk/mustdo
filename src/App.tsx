@@ -1,27 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import './index.css';
 import './App.css';
+import topRoutes from './presentation/router/Top'
+import { InjectionProvider } from './di_container/InjectionProvider';
+import container from './di_container/tsyringe.config';
+import { SampleProvider } from './domain/hooks';
 
-function App () {
+export const App = () => {
   return (
-    <div className="App">
-      <header className="bg-black min-h-screen flex flex-col items-center justify-items-center text-white">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <InjectionProvider container={container}>
+      <SampleProvider>
+        <AppRouter />
+      </SampleProvider>
+
+    </InjectionProvider>
+  )
+}
+
+const AppRouter = () => {
+  return (
+    <BrowserRouter>
+      <Switch>
+        {topRoutes.map((config, i) => (
+          <Route key={i} path={config.path} exact={config.exact} children={config.children} />
+        ))}
+      </Switch>
+    </BrowserRouter>
+  )
 }
 
 export default App;
