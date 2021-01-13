@@ -5,14 +5,12 @@ import { LocalDatabaseRepository } from "../../repository"
 
 export const useTodo = () => {
   const { container } = useInjection()
-  // Repository
+
   const localDatabaseRepository = container.resolve<LocalDatabaseRepository>('LocalDatabaseRepository');
 
-  // State
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string>('')
 
-  // UseCase
   const fetchTodo = useCallback(async (): Promise<Todo | undefined> => {
     console.log("called fetchTodo")
     if (loading) return undefined;
