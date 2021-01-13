@@ -4,15 +4,11 @@ import './App.css';
 import topRoutes from './presentation/router/Top'
 import { InjectionProvider } from './di_container/InjectionProvider';
 import container from './di_container/tsyringe.config';
-import { SampleProvider } from './domain/hooks';
 
 export const App = () => {
   return (
     <InjectionProvider container={container}>
-      <SampleProvider>
-        <AppRouter />
-      </SampleProvider>
-
+      <AppRouter />
     </InjectionProvider>
   )
 }
