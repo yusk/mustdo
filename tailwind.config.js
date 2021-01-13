@@ -26,6 +26,13 @@ module.exports = {
       indigo: colors.indigo,
       purple: colors.violet,
       pink: colors.pink,
+      bg: '#FAF8F7',
+      title: '#303030',
+      text: '#121212',
+      textGray: '#AAAAAA',
+      textGray2: '#777777',
+      button1: '#FF7671',
+      button2: '#DDDDDD'
     },
     spacing: {
       px: '1px',
@@ -133,7 +140,10 @@ module.exports = {
       inner: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
       none: 'none',
     },
-    container: {},
+    container: {
+      padding: '1rem',
+      center: true,
+    },
     cursor: {
       auto: 'auto',
       default: 'default',
