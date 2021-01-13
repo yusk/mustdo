@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Todo } from '../../../domain/entities';
-import { SampleContext, useTodo } from '../../../domain/hooks';
+import { useTodo } from '../../../domain/hooks';
 
 export const Top = (): JSX.Element => {
-  const { todo } = React.useContext(SampleContext);
   const { fetchTodo, saveCurrentTodo, doneCurrentTodo } = useTodo()
 
   const [title, setTitle] = useState<string>("")
