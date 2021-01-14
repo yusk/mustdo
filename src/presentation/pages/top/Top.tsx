@@ -84,7 +84,7 @@ export const Top = (): JSX.Element => {
       <header className="h-16 bg-white shadow flex justify-center items-center">
         <p className="text-center text-title text-3xl font-bold">Must Do</p>
         <img
-          className="fixed right-4 h-4"
+          className="fixed right-4 h-4 cursor-pointer"
           src={checkIcon}
           onClick={onClickHistoryPage}
         />
