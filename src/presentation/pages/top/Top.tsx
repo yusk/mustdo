@@ -62,7 +62,6 @@ export const Top = (): JSX.Element => {
       return
     }
     const doneTodo = await doneCurrentTodo(currentTodo)
-    /// TODO履歴へ追加@tsurumiii
     await addTodoHistory(doneTodo)
     await initTodo()
   }
