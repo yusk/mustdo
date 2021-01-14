@@ -1,11 +1,13 @@
 type Props = {
   onCancel?: () => void
-  onOpen?: () => void
+  onSubmit?: () => void
+  isOpen: boolean
   title: string
 }
 
 export const Modal = (props: Props) => {
-  const { onCancel, onOpen, title } = props
+  const { onCancel, onSubmit, isOpen, title } = props
+  if (!isOpen) return <></>
   return (
     <div className="fixed content-center inset-x-0 h-screen px-4 z-30">
       <div
@@ -23,7 +25,7 @@ export const Modal = (props: Props) => {
             </button>
             <button
               className="mt-4 py-4 md:py-2 w-full md:w-1/2 font-semibold rounded-lg hover:shadow-xl shadow-md placeholder-textGray text-white bg-button1"
-              onClick={onOpen}
+              onClick={onSubmit}
             >
               はい
             </button>
