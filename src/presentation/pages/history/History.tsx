@@ -8,7 +8,7 @@ import { useHistory } from 'react-router-dom'
 
 export const History = (): JSX.Element => {
   const { fetchTodoHistory, removeTodoHistory } = useTodoHistory()
-  const [todoHistory, setHistory] = useState<Todo[]>([])
+  const [todoHistory, setTodoHistory] = useState<Todo[]>([])
 
   const history = useHistory()
 
@@ -21,7 +21,7 @@ export const History = (): JSX.Element => {
       if (todoHistoryList === undefined) {
         return
       }
-      setHistory(todoHistoryList)
+      setTodoHistory(todoHistoryList)
     }
     getTodoHistory()
   }, [])
