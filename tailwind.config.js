@@ -32,7 +32,10 @@ module.exports = {
       textGray: '#AAAAAA',
       textGray2: '#777777',
       button1: '#FF7671',
-      button2: '#DDDDDD'
+      button2: '#DDDDDD',
+      orange: {
+        50: '#FF8971'
+      }
     },
     spacing: {
       px: '1px',
