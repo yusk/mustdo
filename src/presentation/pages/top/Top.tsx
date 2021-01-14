@@ -71,16 +71,6 @@ export const Top = (): JSX.Element => {
     )
   }
 
-  const StartModal = () => {
-    if (!isModalOpen)
-      return <></>
-    return <Modal
-      title="twitterにタスクを投稿しますか？"
-      onCancel={() => setIsModalOpen(false)}
-      onOpen={() => postTwitter(currentTodo?.title)}
-    />
-  }
-
   return (
     <div className="h-screen bg-bg">
       <header className="h-16 bg-white shadow flex justify-center items-center">
@@ -128,7 +118,12 @@ export const Top = (): JSX.Element => {
           }
         </div>
       </div>
-      <StartModal />
+      <Modal
+        title="twitterにタスクを投稿しますか？"
+        isOpen={isModalOpen}
+        onCancel={() => setIsModalOpen(false)}
+        onSubmit={() => postTwitter(currentTodo?.title)}
+      />
     </div>
   );
 }
