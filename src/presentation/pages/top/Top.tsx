@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Todo } from '../../../domain/entities';
 import { useTodo } from '../../../domain/hooks';
+import { useTodoHistory } from '../../../domain/hooks/history/HistoryHooks';
 import { Modal } from '../../components';
+import { useHistory } from 'react-router-dom'
+import checkIcon from '../../../common/images/checkIcon.svg'
 
 export const Top = (): JSX.Element => {
   const { fetchTodo, saveCurrentTodo, doneCurrentTodo, removeCurrentTodo } = useTodo()
+  const { addTodoHistory } = useTodoHistory()
+
+  const history = useHistory()
 
   const [title, setTitle] = useState<string>("")
   const [loading, setLoading] = useState<boolean>(true)
@@ -25,6 +31,8 @@ export const Top = (): JSX.Element => {
     }
     getCurrentTodo()
   }, [])
+
+  const onClickHistoryPage = () => history.push("/history")
 
   const initTodo = async () => {
     const todo = await fetchTodo()
@@ -54,7 +62,7 @@ export const Top = (): JSX.Element => {
       return
     }
     const doneTodo = await doneCurrentTodo(currentTodo)
-    /// TODO履歴へ追加@tsurumiii
+    await addTodoHistory(doneTodo)
     await initTodo()
   }
 
@@ -75,6 +83,11 @@ export const Top = (): JSX.Element => {
     <div className="h-screen bg-bg">
       <header className="h-16 bg-white shadow flex justify-center items-center">
         <p className="text-center text-title text-3xl font-bold">Must Do</p>
+        <img
+          className="fixed right-4 h-4 cursor-pointer"
+          src={checkIcon}
+          onClick={onClickHistoryPage}
+        />
       </header>
 
       <div className="flex flex-col items-center pt-5 container">
