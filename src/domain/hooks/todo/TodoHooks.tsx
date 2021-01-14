@@ -45,10 +45,15 @@ export const useTodo = () => {
     return currentTodo
   }, [localDatabaseRepository])
 
+  const removeCurrentTodo = useCallback(async (): Promise<void> => {
+    await localDatabaseRepository.remove("currentTodo")
+  }, [localDatabaseRepository])
+
   return {
     fetchTodo,
     saveCurrentTodo,
     doneCurrentTodo,
+    removeCurrentTodo,
     loading,
     error,
   }
