@@ -26,7 +26,10 @@ module.exports = {
       indigo: colors.indigo,
       purple: colors.violet,
       pink: colors.pink,
-      bg: '#FAF8F7',
+      bg: {
+        main: '#FAF8F7',
+        gray: '#C6C6C6'
+      },
       title: '#303030',
       text: '#121212',
       textGray: '#AAAAAA',
