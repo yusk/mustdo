@@ -137,9 +137,9 @@ export const Top = (): JSX.Element => {
           }
         </div>
       </div>
-      <div className="fixed right-0 bottom-0 mr-4 mb-4">
+      <div className="fixed right-0 bottom-0 mr-4 md:mr-8 mb-8">
         <button
-          className="h-8 w-8 rounded-full bg-bg-gray"
+          className="h-8 w-8 rounded-full bg-bg-gray text-white"
           onClick={() => setIsInfoModalOpen(true)}
         >
           ？
@@ -149,7 +149,6 @@ export const Top = (): JSX.Element => {
         title={`タスクを登録しますか？\n登録したタスクはツイートされます`}
         isOpen={isStartModalOpen}
         onCancel={() => {
-          saveTodo()
           setIsStartModalOpen(false)
         }}
         onSubmit={async () => {
@@ -162,12 +161,11 @@ export const Top = (): JSX.Element => {
         title={`タスクを完了しますか？\n完了したタスクはツイートされます`}
         isOpen={isCompleteModalOpen}
         onCancel={() => {
-          doneTodo()
           setIsCompleteModalOpen(false)
         }}
-        onSubmit={() => {
+        onSubmit={async () => {
           postTwitter(currentTodo?.title)
-          doneTodo()
+          await doneTodo()
           setIsCompleteModalOpen(false)
         }}
       />
@@ -175,12 +173,11 @@ export const Top = (): JSX.Element => {
         title={`タスクを取り消しますか？\n 取り消したタスクはツイートされます`}
         isOpen={isRemoveModalOpen}
         onCancel={() => {
-          removeTodo()
           setIsRemoveModalOpen(false)
         }}
-        onSubmit={() => {
+        onSubmit={async () => {
           postTwitter(currentTodo?.title)
-          removeTodo()
+          await removeTodo()
           setIsRemoveModalOpen(false)
         }}
       />
