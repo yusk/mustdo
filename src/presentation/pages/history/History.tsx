@@ -34,7 +34,7 @@ export const History = (): JSX.Element => {
   }
 
   return (
-    <div className=" min-h-screen bg-bg">
+    <div className="min-h-screen bg-bg-main">
       <header className="fixed w-full h-16 bg-white shadow flex justify-center items-center">
         <p className="text-center text-title font-bold">完了したタスク</p>
         <img onClick={onClickBack} className="fixed left-4 h-8 cursor-pointer" src={navigateIcon} alt="" />
