@@ -13,21 +13,23 @@ export const Modal = (props: Props) => {
       <div
         className="fixed top-0 inset-x-0 h-screen bg-black opacity-50 z-30"
       />
-      <div className="fixed inset-x-0 z-40 mx-auto px-12 py-10 max-w-3xl bg-bg h-1/2 rounded">
+      <div
+        className="fixed inset-x-0 z-40 mx-6 sm:mx-8 md:mx-auto px-6 sm:px-12 py-10 max-w-3xl bg-bg-main rounded"
+      >
         <div>
-          <p>{title}</p>
-          <div className="flex flex-row">
+          <p className="whitespace-pre-line">{title}</p>
+          <div className="flex flex-row justify-end">
             <button
-              className="mt-4 mr-4 py-4 md:py-2 w-full md:w-1/2 font-semibold rounded-lg hover:shadow-xl shadow-md placeholder-textGray text-textGray2 bg-button2"
+              className="mt-4 mr-4 py-2 w-1/2 md:w-1/4 font-semibold rounded hover:shadow-xl shadow-md placeholder-textGray text-textGray2 bg-button2"
               onClick={onCancel}
             >
               キャンセル
             </button>
             <button
-              className="mt-4 py-4 md:py-2 w-full md:w-1/2 font-semibold rounded-lg hover:shadow-xl shadow-md placeholder-textGray text-white bg-button1"
+              className="mt-4 py-2 w-1/2 md:w-1/4 font-semibold rounded hover:shadow-xl shadow-md placeholder-textGray text-white bg-button1"
               onClick={onSubmit}
             >
-              はい
+              決定
             </button>
           </div>
         </div>
