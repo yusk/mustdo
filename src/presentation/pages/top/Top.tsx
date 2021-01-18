@@ -5,6 +5,7 @@ import { useTodoHistory } from '../../../domain/hooks/history/HistoryHooks';
 import { Modal } from '../../components';
 import { useHistory } from 'react-router-dom'
 import checkIcon from '../../../common/images/checkIcon.svg'
+import { InfoModal } from '../../components/atoms/InfoModal';
 
 export const Top = (): JSX.Element => {
   const { fetchTodo, saveCurrentTodo, doneCurrentTodo, removeCurrentTodo } = useTodo()
@@ -15,7 +16,10 @@ export const Top = (): JSX.Element => {
   const [title, setTitle] = useState<string>("")
   const [loading, setLoading] = useState<boolean>(true)
   const [currentTodo, setCurrentTodo] = useState<Todo | undefined>(undefined)
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+  const [isStartModalOpen, setIsStartModalOpen] = useState<boolean>(false)
+  const [isCompleteModalOpen, setIsCompleteModalOpen] = useState<boolean>(false)
+  const [isRemoveModalOpen, setIsRemoveModalOpen] = useState<boolean>(false)
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState<boolean>(false)
 
   useEffect(() => {
     const getCurrentTodo = async () => {
@@ -46,7 +50,6 @@ export const Top = (): JSX.Element => {
     const todo = await saveCurrentTodo(title)
     setCurrentTodo(todo)
     setTitle("");
-    setIsModalOpen(true)
   }
 
   const postTwitter = (title: string | undefined) => {
@@ -73,14 +76,14 @@ export const Top = (): JSX.Element => {
 
   if (loading) {
     return (
-      <div className="h-screen bg-bg">
+      <div className="h-screen bg-bg-main">
         ...loading
       </div>
     )
   }
 
   return (
-    <div className="h-screen bg-bg">
+    <div className="h-screen bg-bg-main">
       <header className="h-16 bg-white shadow flex justify-center items-center">
         <p className="text-center text-title text-3xl font-bold">Must Do</p>
         <img
@@ -103,8 +106,11 @@ export const Top = (): JSX.Element => {
                   className="focus:border-indigo-500 block h-10 w-full pl-3 pr-12 md:text-sm border-gray-300 rounded-sm"
                 />
                 <button
-                  className="mt-4 py-4 md:py-2 w-full md:w-auto md:px-20 font-semibold rounded-lg hover:shadow-xl shadow-md placeholder-textGray text-white bg-button1"
-                  onClick={saveTodo}
+                  className="mt-4 py-4 md:py-2 w-full lg:w-auto xl:w-1/2 md:px-20 font-semibold rounded-lg hover:shadow-xl shadow-md placeholder-textGray text-white bg-button1"
+                  onClick={() => {
+                    if (title.length === 0) return
+                    setIsStartModalOpen(true)
+                  }}
                 >
                   タスクを登録
                 </button>
@@ -116,13 +122,13 @@ export const Top = (): JSX.Element => {
                 <div className="flex flex-col-reverse md:flex-row justify-between ">
                   <button
                     className="mt-4 mr-4 py-4 md:py-2 w-full md:w-1/2 font-semibold rounded-lg hover:shadow-xl shadow-md placeholder-textGray text-textGray2 bg-button2"
-                    onClick={removeTodo}
+                    onClick={() => setIsRemoveModalOpen(true)}
                   >
                     取り消す
                   </button>
                   <button
                     className="mt-4 py-4 md:py-2 w-full md:w-1/2 font-semibold rounded-lg hover:shadow-xl shadow-md placeholder-textGray text-white bg-button1"
-                    onClick={doneTodo}
+                    onClick={() => setIsCompleteModalOpen(true)}
                   >
                     タスクを完了
                   </button>
@@ -131,11 +137,57 @@ export const Top = (): JSX.Element => {
           }
         </div>
       </div>
+      <div className="fixed right-0 bottom-0 mr-4 mb-4">
+        <button
+          className="h-8 w-8 rounded-full bg-bg-gray"
+          onClick={() => setIsInfoModalOpen(true)}
+        >
+          ？
+        </button>
+      </div>
       <Modal
-        title="twitterにタスクを投稿しますか？"
-        isOpen={isModalOpen}
-        onCancel={() => setIsModalOpen(false)}
-        onSubmit={() => postTwitter(currentTodo?.title)}
+        title={`タスクを登録しますか？\n登録したタスクはツイートされます`}
+        isOpen={isStartModalOpen}
+        onCancel={() => {
+          saveTodo()
+          setIsStartModalOpen(false)
+        }}
+        onSubmit={async () => {
+          postTwitter(title)
+          await saveTodo()
+          setIsStartModalOpen(false)
+        }}
+      />
+      <Modal
+        title={`タスクを完了しますか？\n完了したタスクはツイートされます`}
+        isOpen={isCompleteModalOpen}
+        onCancel={() => {
+          doneTodo()
+          setIsCompleteModalOpen(false)
+        }}
+        onSubmit={() => {
+          postTwitter(currentTodo?.title)
+          doneTodo()
+          setIsCompleteModalOpen(false)
+        }}
+      />
+      <Modal
+        title={`タスクを取り消しますか？\n 取り消したタスクはツイートされます`}
+        isOpen={isRemoveModalOpen}
+        onCancel={() => {
+          removeTodo()
+          setIsRemoveModalOpen(false)
+        }}
+        onSubmit={() => {
+          postTwitter(currentTodo?.title)
+          removeTodo()
+          setIsRemoveModalOpen(false)
+        }}
+      />
+
+      <InfoModal
+        onClose={() => setIsInfoModalOpen(false)}
+        isOpen={isInfoModalOpen}
       />
     </div>
   );
