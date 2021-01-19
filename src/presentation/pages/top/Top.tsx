@@ -6,6 +6,7 @@ import { Modal } from '../../components';
 import { useHistory } from 'react-router-dom'
 import checkIcon from '../../../common/images/checkIcon.svg'
 import { InfoModal } from '../../components/atoms/InfoModal';
+import logo from '../../../common/images/logo.svg'
 
 export const Top = (): JSX.Element => {
   const { fetchTodo, saveCurrentTodo, doneCurrentTodo, removeCurrentTodo } = useTodo()
@@ -83,9 +84,9 @@ export const Top = (): JSX.Element => {
   }
 
   return (
-    <div className="h-screen bg-bg-main">
+    <div className="h-screen bg-bg-main font-sans">
       <header className="h-16 bg-white shadow flex justify-center items-center">
-        <p className="text-center text-title text-3xl font-bold">Must Do</p>
+        <img className="h-6" src={logo} alt="" />
         <img
           className="fixed right-4 h-4 cursor-pointer"
           src={checkIcon}
