@@ -8,6 +8,12 @@ import checkIcon from '../../../common/images/checkIcon.svg'
 import { InfoModal } from '../../components/atoms/InfoModal';
 import logo from '../../../common/images/logo.svg'
 
+enum TweetType {
+  'start',
+  'remove',
+  'done',
+}
+
 export const Top = (): JSX.Element => {
   const { fetchTodo, saveCurrentTodo, doneCurrentTodo, removeCurrentTodo } = useTodo()
   const { addTodoHistory } = useTodoHistory()
@@ -53,11 +59,17 @@ export const Top = (): JSX.Element => {
     setTitle("");
   }
 
-  const postTwitter = (title: string | undefined) => {
+  const postTwitter = (title: string | undefined, type: TweetType) => {
     if (title === undefined) {
       return
     }
-    var link = `https://twitter.com/intent/tweet?text=${title}&hashtags=MustDo&url=https://mustdo.tsurumiii.vercel.app/`
+    let text: string = ''
+    if (type === TweetType.remove) {
+      text = 'を取り消しました。'
+    } else if (type === TweetType.done) {
+      text = 'を達成しました！'
+    }
+    var link = `https://twitter.com/intent/tweet?text=『${title}』${text}&hashtags=MustDo&url=https://mustdo.tsurumiii.vercel.app/`
     window.open(link, "_blank");
   }
 
@@ -153,7 +165,7 @@ export const Top = (): JSX.Element => {
           setIsStartModalOpen(false)
         }}
         onSubmit={async () => {
-          postTwitter(title)
+          postTwitter(title, TweetType.start)
           await saveTodo()
           setIsStartModalOpen(false)
         }}
@@ -165,7 +177,7 @@ export const Top = (): JSX.Element => {
           setIsCompleteModalOpen(false)
         }}
         onSubmit={async () => {
-          postTwitter(currentTodo?.title)
+          postTwitter(currentTodo?.title, TweetType.done)
           await doneTodo()
           setIsCompleteModalOpen(false)
         }}
@@ -177,7 +189,7 @@ export const Top = (): JSX.Element => {
           setIsRemoveModalOpen(false)
         }}
         onSubmit={async () => {
-          postTwitter(currentTodo?.title)
+          postTwitter(currentTodo?.title, TweetType.remove)
           await removeTodo()
           setIsRemoveModalOpen(false)
         }}
