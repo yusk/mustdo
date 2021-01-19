@@ -57,7 +57,7 @@ export const Top = (): JSX.Element => {
     if (title === undefined) {
       return
     }
-    var link = `https://twitter.com/intent/tweet?text=${title}&hashtags=MustDo`
+    var link = `https://twitter.com/intent/tweet?text=${title}&hashtags=MustDo&url=https://mustdo.tsurumiii.vercel.app/`
     window.open(link, "_blank");
   }
 
