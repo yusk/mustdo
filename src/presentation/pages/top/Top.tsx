@@ -69,7 +69,7 @@ export const Top = (): JSX.Element => {
     } else if (type === TweetType.done) {
       text = 'を達成しました！'
     }
-    var link = `https://twitter.com/intent/tweet?text=『${title}』${text}&hashtags=MustDo&url=https://mustdo.tsurumiii.vercel.app/`
+    var link = `https://twitter.com/intent/tweet?text=『${title}』${text}&hashtags=MustDo&url=https://mustdo.volare.site/`
     window.open(link, "_blank");
   }
 
@@ -98,7 +98,7 @@ export const Top = (): JSX.Element => {
   return (
     <div className="h-screen bg-bg-main font-sans">
       <header className="h-16 bg-white shadow flex justify-center items-center">
-        <img className="h-6" src={logo} alt="" />
+        <img className="h-6 w-20" src={logo} alt="" />
         <img
           className="fixed right-4 h-4 cursor-pointer"
           src={checkIcon}
@@ -116,10 +116,10 @@ export const Top = (): JSX.Element => {
                   value={title}
                   onChange={e => setTitle(e.target.value)}
                   placeholder="タスクを入力"
-                  className="focus:border-indigo-500 block h-10 w-full pl-3 pr-12 md:text-sm border-gray-300 rounded-sm"
+                  className="focus:border-indigo-500 block h-10 w-full pl-3 pr-12 md:text-sm border border-gray-300 rounded-sm"
                 />
                 <button
-                  className="mt-4 py-4 md:py-2 w-full lg:w-auto xl:w-1/2 md:px-20 font-semibold rounded-lg hover:shadow-xl shadow-md placeholder-textGray text-white bg-button1"
+                  className="mt-4 py-4 md:py-2 w-full  md:px-20 font-semibold rounded-lg hover:shadow-xl shadow-md placeholder-textGray text-white bg-button1"
                   onClick={() => {
                     if (title.length === 0) return
                     setIsStartModalOpen(true)
@@ -159,9 +159,10 @@ export const Top = (): JSX.Element => {
         </button>
       </div>
       <Modal
+        taskTitle={title}
         title={`タスクを登録しますか？\n登録したタスクはツイートされます`}
         isOpen={isStartModalOpen}
-        onCancel={() => {
+        onClose={() => {
           setIsStartModalOpen(false)
         }}
         onSubmit={async () => {
@@ -171,9 +172,10 @@ export const Top = (): JSX.Element => {
         }}
       />
       <Modal
+        taskTitle={currentTodo?.title as string}
         title={`タスクを完了しますか？\n完了したタスクはツイートされます`}
         isOpen={isCompleteModalOpen}
-        onCancel={() => {
+        onClose={() => {
           setIsCompleteModalOpen(false)
         }}
         onSubmit={async () => {
@@ -183,9 +185,10 @@ export const Top = (): JSX.Element => {
         }}
       />
       <Modal
+        taskTitle={currentTodo?.title as string}
         title={`タスクを取り消しますか？\n 取り消したタスクはツイートされます`}
         isOpen={isRemoveModalOpen}
-        onCancel={() => {
+        onClose={() => {
           setIsRemoveModalOpen(false)
         }}
         onSubmit={async () => {
@@ -199,6 +202,6 @@ export const Top = (): JSX.Element => {
         onClose={() => setIsInfoModalOpen(false)}
         isOpen={isInfoModalOpen}
       />
-    </div>
+    </div >
   );
 }
