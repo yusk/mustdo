@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Todo } from '../../../domain/entities';
-import { useTodo } from '../../../domain/hooks';
+import { useInfoModal, useTodo } from '../../../domain/hooks';
 import { useTodoHistory } from '../../../domain/hooks/history/HistoryHooks';
 import { Modal } from '../../components';
 import { useHistory } from 'react-router-dom'
@@ -17,6 +17,7 @@ enum TweetType {
 export const Top = (): JSX.Element => {
   const { fetchTodo, saveCurrentTodo, doneCurrentTodo, removeCurrentTodo } = useTodo()
   const { addTodoHistory } = useTodoHistory()
+  const { checkIsInitialStartup, saveIsInitialStartup } = useInfoModal()
 
   const history = useHistory()
 
@@ -33,6 +34,7 @@ export const Top = (): JSX.Element => {
       try {
         setLoading(true)
         await initTodo()
+        await initInfoModal()
         setLoading(false)
       } catch (e) {
         console.log(e)
@@ -48,6 +50,14 @@ export const Top = (): JSX.Element => {
   const initTodo = async () => {
     const todo = await fetchTodo()
     setCurrentTodo(todo)
+  }
+
+  const initInfoModal = async () => {
+    const check = await checkIsInitialStartup()
+    if (check === undefined) {
+      return
+    }
+    setIsInfoModalOpen(!check)
   }
 
   const saveTodo = async () => {
@@ -168,6 +178,7 @@ export const Top = (): JSX.Element => {
         }}
         onSubmit={async () => {
           postTwitter(title, TweetType.start)
+          await saveIsInitialStartup()
           await saveTodo()
           setIsStartModalOpen(false)
         }}
@@ -198,7 +209,9 @@ export const Top = (): JSX.Element => {
       />
 
       <InfoModal
-        onClose={() => setIsInfoModalOpen(false)}
+        onClose={async () => {
+          setIsInfoModalOpen(false)
+        }}
         isOpen={isInfoModalOpen}
       />
     </div>
