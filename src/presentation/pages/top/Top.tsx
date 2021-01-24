@@ -79,7 +79,7 @@ export const Top = (): JSX.Element => {
     } else if (type === TweetType.done) {
       text = 'を達成しました！'
     }
-    var link = `https://twitter.com/intent/tweet?text=『${title}』${text}&hashtags=MustDo&url=https://mustdo.tsurumiii.vercel.app/`
+    var link = `https://twitter.com/intent/tweet?text=『${title}』${text}&hashtags=MustDo&url=https://mustdo.volare.site/`
     window.open(link, "_blank");
   }
 
@@ -127,7 +127,7 @@ export const Top = (): JSX.Element => {
                   onChange={e => setTitle(e.target.value)}
                   maxLength={80}
                   placeholder="タスクを入力"
-                  className="focus:border-indigo-500 block h-10 w-full pl-3 pr-12 md:text-sm border-gray-300 rounded-sm"
+                  className="focus:border-indigo-500 block h-10 w-full pl-3 pr-12 md:text-sm border border-gray-300 rounded-sm"
                 />
                 <p className={title.length >= 80 ? 'text-red-500' : ''}>{title.length}/80</p>
                 <button
@@ -171,9 +171,10 @@ export const Top = (): JSX.Element => {
         </button>
       </div>
       <Modal
+        taskTitle={title}
         title={`タスクを登録しますか？\n登録したタスクはツイートされます`}
         isOpen={isStartModalOpen}
-        onCancel={() => {
+        onClose={() => {
           setIsStartModalOpen(false)
         }}
         onSubmit={async () => {
@@ -184,9 +185,10 @@ export const Top = (): JSX.Element => {
         }}
       />
       <Modal
+        taskTitle={currentTodo?.title as string}
         title={`タスクを完了しますか？\n完了したタスクはツイートされます`}
         isOpen={isCompleteModalOpen}
-        onCancel={() => {
+        onClose={() => {
           setIsCompleteModalOpen(false)
         }}
         onSubmit={async () => {
@@ -196,9 +198,10 @@ export const Top = (): JSX.Element => {
         }}
       />
       <Modal
+        taskTitle={currentTodo?.title as string}
         title={`タスクを取り消しますか？\n 取り消したタスクはツイートされます`}
         isOpen={isRemoveModalOpen}
-        onCancel={() => {
+        onClose={() => {
           setIsRemoveModalOpen(false)
         }}
         onSubmit={async () => {
@@ -214,6 +217,6 @@ export const Top = (): JSX.Element => {
         }}
         isOpen={isInfoModalOpen}
       />
-    </div>
+    </div >
   );
 }
