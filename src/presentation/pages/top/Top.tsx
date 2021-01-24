@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Todo } from '../../../domain/entities';
-import { useTodo } from '../../../domain/hooks';
+import { useInfoModal, useTodo } from '../../../domain/hooks';
 import { useTodoHistory } from '../../../domain/hooks/history/HistoryHooks';
 import { Modal } from '../../components';
 import { useHistory } from 'react-router-dom'
@@ -17,6 +17,7 @@ enum TweetType {
 export const Top = (): JSX.Element => {
   const { fetchTodo, saveCurrentTodo, doneCurrentTodo, removeCurrentTodo } = useTodo()
   const { addTodoHistory } = useTodoHistory()
+  const { checkIsInitialStartup, saveIsInitialStartup } = useInfoModal()
 
   const history = useHistory()
 
@@ -33,6 +34,7 @@ export const Top = (): JSX.Element => {
       try {
         setLoading(true)
         await initTodo()
+        await initInfoModal()
         setLoading(false)
       } catch (e) {
         console.log(e)
@@ -48,6 +50,14 @@ export const Top = (): JSX.Element => {
   const initTodo = async () => {
     const todo = await fetchTodo()
     setCurrentTodo(todo)
+  }
+
+  const initInfoModal = async () => {
+    const check = await checkIsInitialStartup()
+    if (check === undefined) {
+      return
+    }
+    setIsInfoModalOpen(!check)
   }
 
   const saveTodo = async () => {
@@ -98,7 +108,7 @@ export const Top = (): JSX.Element => {
   return (
     <div className="h-screen bg-bg-main font-sans">
       <header className="h-16 bg-white shadow flex justify-center items-center">
-        <img className="h-6 w-20" src={logo} alt="" />
+        <img className="h-6 w-28 md:w-32" src={logo} alt="" />
         <img
           className="fixed right-4 h-4 cursor-pointer"
           src={checkIcon}
@@ -110,24 +120,26 @@ export const Top = (): JSX.Element => {
         <div className="md:w-1/2 w-full">
           {
             currentTodo === undefined ?
-              <>
+              <div className="flex flex-col items-end">
                 <input
                   type="text"
                   value={title}
                   onChange={e => setTitle(e.target.value)}
+                  maxLength={80}
                   placeholder="タスクを入力"
                   className="focus:border-indigo-500 block h-10 w-full pl-3 pr-12 md:text-sm border border-gray-300 rounded-sm"
                 />
+                <p className={title.length >= 80 ? 'text-red-500' : ''}>{title.length}/80</p>
                 <button
-                  className="mt-4 py-4 md:py-2 w-full  md:px-20 font-semibold rounded-lg hover:shadow-xl shadow-md placeholder-textGray text-white bg-button1"
+                  className="mt-4 py-4 md:py-2 w-full md:px-20 font-semibold rounded-lg hover:shadow-xl shadow-md placeholder-textGray text-white bg-button1"
                   onClick={() => {
-                    if (title.length === 0) return
+                    if (title.length === 0 || title.length > 80) return
                     setIsStartModalOpen(true)
                   }}
                 >
                   タスクを登録
                 </button>
-              </> :
+              </div> :
               <>
                 <div className="bg-white px-4 py-3 shadow-md rounded">
                   <h1 className="text-text font-bold">{currentTodo.title}</h1>
@@ -167,6 +179,7 @@ export const Top = (): JSX.Element => {
         }}
         onSubmit={async () => {
           postTwitter(title, TweetType.start)
+          await saveIsInitialStartup()
           await saveTodo()
           setIsStartModalOpen(false)
         }}
@@ -199,7 +212,9 @@ export const Top = (): JSX.Element => {
       />
 
       <InfoModal
-        onClose={() => setIsInfoModalOpen(false)}
+        onClose={async () => {
+          setIsInfoModalOpen(false)
+        }}
         isOpen={isInfoModalOpen}
       />
     </div >
