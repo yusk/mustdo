@@ -115,10 +115,11 @@ export const Top = (): JSX.Element => {
                   type="text"
                   value={title}
                   onChange={e => setTitle(e.target.value)}
+                  maxLength={80}
                   placeholder="タスクを入力"
                   className="focus:border-indigo-500 block h-10 w-full pl-3 pr-12 md:text-sm border-gray-300 rounded-sm"
                 />
-                <p className={title.length > 80 ? 'text-red-500' : ''}>{title.length}/80</p>
+                <p className={title.length >= 80 ? 'text-red-500' : ''}>{title.length}/80</p>
                 <button
                   className="mt-4 py-4 md:py-2 w-full md:px-20 font-semibold rounded-lg hover:shadow-xl shadow-md placeholder-textGray text-white bg-button1"
                   onClick={() => {
