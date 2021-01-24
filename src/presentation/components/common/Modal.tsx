@@ -27,7 +27,7 @@ export const Modal = (props: Props) => {
           />
         </div>
         <div className="px-6 sm:px-12">
-          <p className="font-bold">＜{taskTitle}＞</p>
+          <p className="font-bold text-center break-words">『{taskTitle}』</p>
           <p className="whitespace-pre-line">{title}</p>
           <div className="flex flex-row justify-end">
             <button
