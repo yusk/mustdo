@@ -176,6 +176,7 @@ export const Top = (): JSX.Element => {
         }}
         onSubmit={async () => {
           postTwitter(title, TweetType.start)
+          await saveIsInitialStartup()
           await saveTodo()
           setIsStartModalOpen(false)
         }}
@@ -207,7 +208,6 @@ export const Top = (): JSX.Element => {
 
       <InfoModal
         onClose={async () => {
-          await saveIsInitialStartup()
           setIsInfoModalOpen(false)
         }}
         isOpen={isInfoModalOpen}
