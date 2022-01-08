@@ -79,7 +79,7 @@ export const Top = (): JSX.Element => {
     } else if (type === TweetType.done) {
       text = 'を達成しました！'
     }
-    var link = `https://twitter.com/intent/tweet?text=『${title}』${text}&hashtags=MustDo&url=https://mustdo.volare.site/`
+    var link = `https://twitter.com/intent/tweet?text=『${title}』${text}&hashtags=MustDoMemo&url=https://mustdo.volare.site/`
     window.open(link, "_blank");
   }
 
